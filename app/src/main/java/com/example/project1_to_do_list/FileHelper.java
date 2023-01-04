@@ -21,8 +21,6 @@ public class FileHelper {
             ObjectOutputStream oas = new ObjectOutputStream(fos);
             oas.writeObject(item);
             oas.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -30,7 +28,8 @@ public class FileHelper {
 
     public static ArrayList<String> readData(Context context)
     {
-        ArrayList<String> itemList = null;
+        ArrayList<String> itemList;
+        itemList = null;
 
         try {
             FileInputStream fis = context.openFileInput(FILENAME);
@@ -41,9 +40,7 @@ public class FileHelper {
             itemList = new ArrayList<>();
 
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return itemList;
