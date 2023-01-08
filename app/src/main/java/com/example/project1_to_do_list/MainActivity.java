@@ -8,7 +8,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -29,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
 
     EditText item;
     Button add;
-    ListView listView;
+   ListView listView;
     private ArrayList<String> itemList = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
 
@@ -40,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         item = findViewById(R.id.editText);
         add = findViewById(R.id.button);
         listView = findViewById(R.id.list2);
@@ -50,29 +52,39 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1
                 , android.R.id.text1, itemList);
         listView.setAdapter(arrayAdapter);
+        FileHelper.writeData(itemList, getApplicationContext());
+
 
         add.setOnClickListener(v -> {
             String itemName = item.getText().toString();
             itemList.add(itemName);
             itemList.add(""); //dodanie Itemu aby wyświetlić na nim pożniej WebView, bez tego webView zasłaniało zadanie
             item.setText("");
-            FileHelper.writeData(itemList, getApplicationContext());
+            // FileHelper.writeData(itemList, getApplicationContext());
+            // service to wykonuje
             arrayAdapter.notifyDataSetChanged();
             recyclerAdapter.notifyDataSetChanged();
+
+//zadanie 6
+//wysyła się intent który uruchamia service przekając do niego itemname, nastepnie service odapala Filehelper do zapisania w pliku
+        Intent i = new Intent(getApplicationContext(),MyService.class);
+        startService(i);
+        i.putExtra(itemName,itemName);
+
         });
 
 
 
-    // Zadanie 4.
-    //Do wyświetlania elementów proszę użyć RecyclerView zamiat ListView.
+// Zadanie 4.
+//Do wyświetlania elementów proszę użyć RecyclerView zamiat ListView.
         recyclerAdapter = new RecyclerAdapter(itemList, MainActivity.this, imageView, this, webView);
         recyclerView.setAdapter(recyclerAdapter);
-
-
     }
-    //Zadanie 4
-    //Po kliknięciu w ikonę dopiero wtedy
-    //powinien pojawić się komunikat o usunięciu danego elementu.
+
+
+//Zadanie 4
+//Po kliknięciu w ikonę dopiero wtedy
+//powinien pojawić się komunikat o usunięciu danego elementu.
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onItemClick(int position) {
