@@ -9,23 +9,31 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RecyclerAdapter.OnItemListener{
 
     private RecyclerView recyclerView;
     private RecyclerAdapter recyclerAdapter;
     private ImageView imageView;
+    private WebView webView;
+   private List<String> mUrlList = Arrays.asList("https://wallbeing.com/2272-thickbox_default/grafika-joker.jpg", "https://safetyheads.com/wp-content/themes/safetyheads/images/logo.svg", "https://upload.wikimedia.org/wikipedia/commons/3/31/Most_Solidarno%C5%9Bci_w_P%C5%82ocku_4040.jpg");
+
     EditText item;
     Button add;
     ListView listView;
     private ArrayList<String> itemList = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
+
+
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
@@ -46,34 +54,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
         add.setOnClickListener(v -> {
             String itemName = item.getText().toString();
             itemList.add(itemName);
+            itemList.add(""); //dodanie Itemu aby wyświetlić na nim pożniej WebView, bez tego webView zasłaniało zadanie
             item.setText("");
             FileHelper.writeData(itemList, getApplicationContext());
             arrayAdapter.notifyDataSetChanged();
-
             recyclerAdapter.notifyDataSetChanged();
         });
 
-/*
-stare niepotrzebne list view
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            AlertDialog.Builder AlertDialogFragment = new AlertDialog.Builder(MainActivity.this);
-            AlertDialogFragment.setView(R.layout.fragment_blank);  //ustawienie fragmentu jako widok
-            AlertDialogFragment.setMessage("Do you want delete?");
-            AlertDialogFragment.setCancelable(false);
-            AlertDialogFragment.setNegativeButton("No", (dialog, which) -> dialog.cancel());
-            AlertDialogFragment.setPositiveButton("Yes", (dialog, which) -> {
-                itemList.remove(position);
-                arrayAdapter.notifyDataSetChanged();
-                FileHelper.writeData(itemList, getApplicationContext());
-            });
-            AlertDialog alertDialogFragment = AlertDialogFragment.create();
-            alertDialogFragment.show();
-        });
-        */
+
 
     // Zadanie 4.
     //Do wyświetlania elementów proszę użyć RecyclerView zamiat ListView.
-        recyclerAdapter = new RecyclerAdapter(itemList,MainActivity.this, imageView, this);
+        recyclerAdapter = new RecyclerAdapter(itemList, MainActivity.this, imageView, this, webView);
         recyclerView.setAdapter(recyclerAdapter);
 
 
@@ -81,16 +73,20 @@ stare niepotrzebne list view
     //Zadanie 4
     //Po kliknięciu w ikonę dopiero wtedy
     //powinien pojawić się komunikat o usunięciu danego elementu.
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onItemClick(int position) {
-itemList.get(position);
+        itemList.get(position);
         AlertDialog.Builder AlertDialogFragment = new AlertDialog.Builder(MainActivity.this);
         AlertDialogFragment.setView(R.layout.fragment_blank);  //ustawienie fragmentu jako widok
         AlertDialogFragment.setMessage("Do you want delete?");
         AlertDialogFragment.setCancelable(false);
         AlertDialogFragment.setNegativeButton("No", (dialog, which) -> dialog.cancel());
         AlertDialogFragment.setPositiveButton("Yes", (dialog, which) -> {
+
+
             itemList.remove(position);
+
             arrayAdapter.notifyDataSetChanged();
             FileHelper.writeData(itemList, getApplicationContext());
             recyclerAdapter.notifyDataSetChanged();
@@ -98,6 +94,8 @@ itemList.get(position);
 
         AlertDialog alertDialogFragment = AlertDialogFragment.create();
         alertDialogFragment.show();
+
+
     }
 }
 

@@ -25,8 +25,6 @@ public class FileHelper {
             ObjectOutputStream oas = new ObjectOutputStream(fos);
             oas.writeObject(item);
             oas.close();
-          //  Toast.makeText(context, "file saving",
-            //        LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,7 +50,6 @@ public class FileHelper {
             e.printStackTrace();
         }
         return itemList;
-
 
     }
 }
