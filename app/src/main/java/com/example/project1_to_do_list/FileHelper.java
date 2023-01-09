@@ -5,6 +5,8 @@ import static android.widget.Toast.LENGTH_LONG;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -15,7 +17,7 @@ import java.util.ArrayList;
 
 public class FileHelper {
 
-    public static final String FILENAME = "listinfo.dat";
+public static final String FILENAME = "listinfo.dat";
 
 
     public static void writeData(ArrayList<String> item, Context context)

@@ -1,29 +1,26 @@
 package com.example.project1_to_do_list;
 
 
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.view.View;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements RecyclerAdapter.OnItemListener{
+public class MainActivity<Int> extends AppCompatActivity implements RecyclerAdapter.OnItemListener{
 
     private RecyclerView recyclerView;
     private RecyclerAdapter recyclerAdapter;
@@ -35,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
     ListView listView;
     private ArrayList<String> itemList = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
-
+    private int id;
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
@@ -56,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
         add.setOnClickListener(v -> {
             String itemName = item.getText().toString();
             itemList.add(itemName);
+            id =  itemList.size();
+            System.out.println("sprawdzczenie wartosci itemName: " + id);
             itemList.add(""); //dodanie Itemu aby wyświetlić na nim pożniej WebView, bez tego webView zasłaniało zadanie
             item.setText("");
             // FileHelper.writeData(itemList, getApplicationContext());
@@ -66,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
 //wysyła się intent który uruchamia service przekając do niego itemname, nastepnie service odapala Filehelper do zapisania w pliku
         Intent i = new Intent(getApplicationContext(),MyService.class);
         i.putExtra("key_name",itemName);
+        i.putExtra("key_id",id);
         startService(i);
 
             arrayAdapter.notifyDataSetChanged();

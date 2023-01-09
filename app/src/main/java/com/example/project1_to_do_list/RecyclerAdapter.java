@@ -17,8 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder>{
-    private ArrayList<String> itemList;
-    private Context context;
+    private final ArrayList<String> itemList;
     private ImageView imageView;
     private OnItemListener onItemListener;
     private WebView webView;
@@ -26,7 +25,6 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ItemV
 
     public RecyclerAdapter(ArrayList<String> itemList, Context context, ImageView imageView, OnItemListener onItemListener, WebView webView) {
         this.itemList = itemList;
-        this.context = context;
         this.imageView = imageView;
         this.onItemListener = onItemListener;
         this.webView = webView;
@@ -55,7 +53,7 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ItemV
 
     @Override
     public int getItemCount() {
-        return itemList.size();
+       return itemList.size();
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

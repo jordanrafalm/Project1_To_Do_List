@@ -8,10 +8,14 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MyService extends Service {
     private ArrayList<String> itemList;
+    private int id;
 
 
     @Nullable
@@ -40,9 +44,16 @@ public class MyService extends Service {
 
             if(bundle != null){
                 itemName = bundle.getString("key_name");
+                id = bundle.getInt("key_id");
                 System.out.println("sprawdzczenie wartosci po pobraniu z intenta itemName: " + itemName);
-//zapisanie itemName do SharedPreferences
-                editor.putString("key_name",itemName);
+
+//zadanie 8
+//zapisanie json do SharedPreferences
+                Date nowDate = new Date();
+                Gson gson = new Gson();
+                Record record = new Record(id, nowDate, itemName,true);
+                String json = gson.toJson(record);
+                editor.putString("key_name_json",json);
                 editor.apply();
             }
 
