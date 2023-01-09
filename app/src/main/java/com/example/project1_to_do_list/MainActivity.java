@@ -106,7 +106,6 @@ public class MainActivity<Int> extends AppCompatActivity implements RecyclerAdap
         AlertDialog alertDialogFragment = AlertDialogFragment.create();
         alertDialogFragment.show();
 
-
     }
 }
 

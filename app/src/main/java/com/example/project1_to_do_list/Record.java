@@ -8,7 +8,6 @@ public class Record {
     private String text;
     private boolean idDeleted;
 
-
     public Record(int id, Date date, String text, boolean idDeleted) {
         this.id = id;
         this.date = date;

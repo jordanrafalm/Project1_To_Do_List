@@ -19,7 +19,6 @@ public class FileHelper {
 
 public static final String FILENAME = "listinfo.dat";
 
-
     public static void writeData(ArrayList<String> item, Context context)
     {
         try {

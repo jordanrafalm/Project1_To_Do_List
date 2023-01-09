@@ -5,11 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
-
 import androidx.annotation.Nullable;
-
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.Date;
 
