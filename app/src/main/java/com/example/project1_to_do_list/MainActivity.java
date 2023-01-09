@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
@@ -28,14 +29,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
     private RecyclerAdapter recyclerAdapter;
     private ImageView imageView;
     private WebView webView;
-   private List<String> mUrlList = Arrays.asList("https://wallbeing.com/2272-thickbox_default/grafika-joker.jpg", "https://safetyheads.com/wp-content/themes/safetyheads/images/logo.svg", "https://upload.wikimedia.org/wikipedia/commons/3/31/Most_Solidarno%C5%9Bci_w_P%C5%82ocku_4040.jpg");
-
+    private List<String> mUrlList = Arrays.asList("https://wallbeing.com/2272-thickbox_default/grafika-joker.jpg", "https://safetyheads.com/wp-content/themes/safetyheads/images/logo.svg", "https://upload.wikimedia.org/wikipedia/commons/3/31/Most_Solidarno%C5%9Bci_w_P%C5%82ocku_4040.jpg");
     EditText item;
     Button add;
-   ListView listView;
+    ListView listView;
     private ArrayList<String> itemList = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
-
 
 
     @SuppressLint("NotifyDataSetChanged")
@@ -54,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
         listView.setAdapter(arrayAdapter);
         FileHelper.writeData(itemList, getApplicationContext());
 
-
         add.setOnClickListener(v -> {
             String itemName = item.getText().toString();
             itemList.add(itemName);
@@ -62,15 +60,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
             item.setText("");
             // FileHelper.writeData(itemList, getApplicationContext());
             // service to wykonuje
-            arrayAdapter.notifyDataSetChanged();
-            recyclerAdapter.notifyDataSetChanged();
+
 
 //zadanie 6
 //wysyła się intent który uruchamia service przekając do niego itemname, nastepnie service odapala Filehelper do zapisania w pliku
         Intent i = new Intent(getApplicationContext(),MyService.class);
+        i.putExtra("key_name",itemName);
         startService(i);
-        i.putExtra(itemName,itemName);
 
+            arrayAdapter.notifyDataSetChanged();
+            recyclerAdapter.notifyDataSetChanged();
         });
 
 

@@ -1,24 +1,18 @@
 package com.example.project1_to_do_list;
 
-import static android.app.PendingIntent.getActivity;
-import static android.content.Intent.getIntent;
-import static com.example.project1_to_do_list.FileHelper.FILENAME;
-
-import android.app.Activity;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.IBinder;
+
 import androidx.annotation.Nullable;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.net.URISyntaxException;
+
 import java.util.ArrayList;
 
 public class MyService extends Service {
     private ArrayList<String> itemList;
+
 
     @Nullable
     @Override
@@ -31,22 +25,31 @@ public class MyService extends Service {
     public void onCreate() {
                         super.onCreate();
 
+
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        try {
-            String itemName;
-            itemName = Intent.getIntent("itemName").toString();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        SharedPreferences sharedPreferences = getSharedPreferences("my_prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        Bundle bundle = intent.getExtras();
+
+            String itemName = "";
+            System.out.println("sprawdzczenie wartosci itemName: " + itemName);
+
+            if(bundle != null){
+                itemName = bundle.getString("key_name");
+                System.out.println("sprawdzczenie wartosci po pobraniu z intenta itemName: " + itemName);
+//zapisanie itemName do SharedPreferences
+                editor.putString("key_name",itemName);
+                editor.apply();
+            }
+
         FileHelper.writeData(itemList, getApplicationContext());
         return super.onStartCommand(intent, flags, startId);
 
         }
-
-
 
     @Override
     public void onDestroy() {
